@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!--Tomar una fotografía Con Js
+	    @date 18/03/2019
+	    @author W-Varg	-->
+</head>
+
+<body>
+    <div>
+        <form action="">
+            <input type="file" name="fotofile" id="fotofile">
+            <img src="" id="foto" alt="">
+        </form>
+    </div>
+    <button id="mostrar_camara">Mostrar Camara</button>
+
+</body>
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script>
+    let foto = document.getElementById('foto');
+    let mostrar_camara = document.getElementById('mostrar_camara');
+
+    mostrar_camara.addEventListener('click', () => {
+        let alto = 365, ancho = 330; //tamaño del popups
+        let top = (screen.height - alto) / 3, left = (screen.width - ancho) / 2; // para centrar en pantalla
+
+        //abrir el popups de la camara, window.open(url,name,opciones)
+        windows_camer = window.open('camara.html', 'micamara', 'location=no, menubar=no, addressbar=no, status=0, titlebar=no, scrollbars=no, width=' + ancho + ', height=' + alto + ', top=' + top + ',left=' + left + ', toolbar=no,directories=no, resizable=0');
+        if (window.focus) { windows_camer.focus() } //un focus ala ventana abierta
+
+        windows_camer.onbeforeunload =()=>{ /* lineas de codigo por si cierra el popups*/ }
+    });
+
+    // obtenemos resultado del popups
+    function resultado(img, alto, ancho) {
+        foto.width = ancho; foto.height = alto; //alto y ancho del lienzo
+        foto.src = img; //cargamos la img
+    }
+
+    // window.onload = () => {  } // codigo al cargar la pagina
+</script>
+
+</html>

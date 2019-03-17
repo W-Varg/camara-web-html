@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="text-center">
+        <video id="video" autoplay style=" width: 100% "></video>
+        <button id="btn_capturar" class="btn btn-primary">Capturar Fotografia</button>
+        <button id="cancelar" class="btn btn-danger" onclick="cerrar();">cancelar</button>
+        <canvas id="lienzo" width="320" height="320"></canvas>
+    </div>
+</body>
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script>
+    //variables definidas
+    let video = document.getElementById('video');
+    let lienzoCanvas = document.getElementById('lienzo');
+    let captureButton = document.getElementById('btn_capturar');
+    let videoTracks;
+
+    let handleSuccess = function (stream) {  //se inicia la transmision
+        video.srcObject = stream;
+        videoTracks = stream.getVideoTracks();
+    };
+
+    captureButton.addEventListener('click', function () {
+        let context = lienzo.getContext('2d'); //obtenemos contexto del canvas
+        context.drawImage(video, 0, 0, lienzoCanvas.width, lienzoCanvas.height); //capturamos y dibujamos en canvas        
+        videoTracks.forEach(function (track) { track.stop() });// Detemos la Tramsmision del video
+
+        let foto = lienzo.toDataURL('image/png');// obtener foto en base 64
+        window.opener.resultado(foto, lienzoCanvas.height, lienzoCanvas.width); //devolvemos los datos al padre
+        cerrar()
+    });
+
+    $("#lienzo").hide(); //oculta el div del canvas e inicia el video
+    navigator.mediaDevices.getUserMedia({ audio: false, video: { height: 320, width: 320 } }).then(handleSuccess);
+
+    function cerrar() { // cerrar el popups
+        window.close();
+        window.opener.focus();
+    }
+
+</script>
+
+</html>
